@@ -1,4 +1,4 @@
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import MovieCard from "components/MovieCard";
 import Pagination from "components/pagination";
@@ -22,23 +22,20 @@ function Listing() {
     });
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber} &sort=id`)
+        axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber}`)
             .then(response => {
                 const data = response.data as MoviePage;
                 setPage(data);
             });
     }, [pageNumber]);
 
-    // forma entrada, lógica solta e fora do ciclo do react, faz com que ele roda duas vezes
-    //axios.get(`${BASE_URL}/movies?size=12&page=3`)
-    //     .then(response => {
-    //         const data = response.data as MoviePage;
-    //         setPageNumber(data.number);
-    //     });
+    const handlePageChange = (newNumber: number) => {
+        setPageNumber(newNumber);
+    }
 
     return (
         <>
-            <Pagination />
+            <Pagination page = { page } onChange={handlePageChange}/>
 
             <div className="container">
                 <div className="row">
